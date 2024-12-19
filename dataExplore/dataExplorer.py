@@ -1,6 +1,6 @@
 from pandas.api.types import is_numeric_dtype
 import seaborn as sns
-from wordcloud import  WordCloud
+
 import math
 import matplotlib.pyplot as plt
 class Util:
@@ -73,15 +73,13 @@ class StringExplorer(DataExplorer):
 
         self.dataset.fillna('-5', inplace=True)
     def draw(self):
-
         for column in self.dataset:
             t = self.u.figure.add_subplot(self.u.Rows, self.u.Cols, self.u.Position[self.u.i])
-            wordcloud = WordCloud().generate(self.dataset[column])
             t.set_xlabel(column)
             t.xaxis.set_label_position('top')
-            # Display the generated image:
-            t.imshow(wordcloud, interpolation='bilinear')
-            self.u.i+=1
+            counter = self.dataset[column].value_counts()  # set top 10: df_stack.value_counts()[0:10]
+            t.bar(counter.index, counter.values)
+            self.u.i += 1
 
 class CategoryExplorer(DataExplorer):
     def __init__(self, dataset,  u):
